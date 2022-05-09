@@ -4,6 +4,11 @@ import { recommendationRepository } from "../../src/repositories/recommendationR
 import * as errors from "../../src/utils/errorUtils.js"
 
 describe("recommendation service test suit", () => {
+  beforeEach( () => {
+    jest.clearAllMocks()
+    jest.resetAllMocks()
+  })
+
   it("GET /recommendations/random should throw not_found when there are no recs", () => {
     const mockedMathValue = 0.5
 
@@ -33,5 +38,21 @@ describe("recommendation service test suit", () => {
     expect( async () => {
       await recommendationService.downvote(testID) 
     }).rejects.toEqual(errors.notFoundError())
+  })
+
+  it("POST /recommendations/:id/downvote should remove recommendation whenever its score reaches -6", () => {
+    const testRec = {
+      id: 1, 
+      name: "Spanish Sahara", 
+      youtubeLink: "https://www.youtube.com/watch?v=eYoINidnLRQ", 
+      score: -6
+    }
+
+    jest.spyOn(recommendationRepository, "find").mockResolvedValue(testRec)
+    jest.spyOn(recommendationRepository, "updateScore").mockResolvedValue(null)
+
+    const removalFunction = jest.spyOn(recommendationRepository, "remove").mockResolvedValue(null)
+
+    expect(removalFunction).toHaveBeenCalledTimes(1)
   })
 })
