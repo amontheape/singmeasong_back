@@ -65,4 +65,34 @@ describe("app test suit - integration", () => {
     expect(response.status).toBe(201)
     expect(createdRec).not.toBeNull()
   })
+
+  it("POST /recommendations/:id/upvote should increase score value on referred rec", async () => {
+    const createdRec = await prisma.recommendation.create({
+      data: {name: "Stressed Out", youtubeLink: "https://www.youtube.com/watch?v=pXRviuL6vMY"}
+    })
+
+    const response = await supertest(app).post(`/recommendations/${createdRec.id}/upvote`)
+
+    const votedRec = await prisma.recommendation.findUnique({
+      where: {name: createdRec.name}
+    })
+
+    expect(response.status).toBe(200)
+    expect(votedRec.score).toBe(createdRec.score + 1)
+  })
+
+  it("POST /recommendations/:id/downvote should decrease score value on referred rec", async () => {
+    const createdRec = await prisma.recommendation.create({
+      data: {name: "Runaway", youtubeLink: "https://www.youtube.com/watch?v=d_HlPboLRL8s"}
+    })
+
+    const response = await supertest(app).post(`/recommendations/${createdRec.id}/downvote`)
+
+    const votedRec = await prisma.recommendation.findUnique({
+      where: {name: createdRec.name}
+    })
+
+    expect(response.status).toBe(200)
+    expect(votedRec.score).toBe(createdRec.score - 1)
+  })
 })
