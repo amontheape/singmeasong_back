@@ -6,6 +6,7 @@ export default {
   globals: {
     "ts-jest": {
       useESM: true,
+      collectCoverage: true
     },
   },
   moduleNameMapper: {
