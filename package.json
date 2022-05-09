@@ -6,10 +6,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/server.ts",
-    "test": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -i",
     "dev:test": "dotenv -e .env.test nodemon src/server.ts",
-    "migrate": "prisma migrate dev",
-    "migrate:test": "dotenv -e .env.test prisma migrate dev"
+    "test": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -i",
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -i --coverage",
+    "migrate": "prisma migrate dev"
   },
   "keywords": [],
   "author": "",
