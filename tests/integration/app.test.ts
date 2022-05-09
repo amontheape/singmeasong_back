@@ -15,6 +15,10 @@ describe("app test suit - integration", () => {
     })
   })
 
+  afterAll( async () => {
+    await prisma.$disconnect()
+  })
+
   it("GET /recommendations should list all recommendations", async () => {
     const response = await supertest(app).get("/recommendations")
 
@@ -39,5 +43,13 @@ describe("app test suit - integration", () => {
 
     expect(response.status).toBe(200)
     expect(response.body).not.toBeUndefined()
+  })
+
+  it("GET /recommendations/top/:amount should return x(amount) recommendations ordered by score", async () => {
+    const response = await supertest(app).get("/recommendations/top/2")
+
+    expect(response.status).toBe(200)
+    expect(response.body.length).toBe(2)
+    expect(response.body[0].score).toBeGreaterThan(response.body[1].score)
   })
 })
