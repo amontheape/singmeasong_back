@@ -95,4 +95,12 @@ describe("app test suit - integration", () => {
     expect(response.status).toBe(200)
     expect(votedRec.score).toBe(createdRec.score - 1)
   })
+
+  it("POST /reset-database should reset the database", async () => {
+    const response = await supertest(app).post("/reset-database")
+    const currentRec = await prisma.recommendation.findMany()
+
+    expect(response.status).toBe(200)
+    expect(currentRec.length).toBe(0)
+  })
 })
