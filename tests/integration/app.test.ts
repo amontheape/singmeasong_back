@@ -27,10 +27,17 @@ describe("app test suit - integration", () => {
       data: {name: "Dua Lipa : Tiny Desk", youtubeLink: "https://www.youtube.com/watch?v=F4neLJQC1_E"}
     })
 
-    const response = await supertest(app).get(`/recommendation/${createdRec.id}`)
+    const response = await supertest(app).get(`/recommendations/${createdRec.id}`)
     
     expect(response.status).toBe(200)
     expect(response.body).not.toBeUndefined()
     expect(response.body.id).toBe(createdRec.id)
+  })
+
+  it("GET /recommendations/random should return random recommendation", async () => {
+    const response = await supertest(app).get("/recommendations/random")
+
+    expect(response.status).toBe(200)
+    expect(response.body).not.toBeUndefined()
   })
 })
