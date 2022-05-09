@@ -1,5 +1,4 @@
 import { jest } from "@jest/globals"
-import { prisma } from '../../src/database.js'
 import { recommendationService } from "../../src/services/recommendationsService.js"
 import { recommendationRepository } from "../../src/repositories/recommendationRepository.js"
 import * as errors from "../../src/utils/errorUtils.js"

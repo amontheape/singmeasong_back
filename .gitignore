@@ -2,5 +2,3 @@ dist
 node_modules
 .env*
 !.env.example
-.eslintrc.json
-.prettierrc.json
