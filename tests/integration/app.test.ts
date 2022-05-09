@@ -52,4 +52,17 @@ describe("app test suit - integration", () => {
     expect(response.body.length).toBe(2)
     expect(response.body[0].score).toBeGreaterThan(response.body[1].score)
   })
+
+  it("POST /recommendations should create new recommendation", async () => {
+    const response = await supertest(app).post("/recommendations").send(
+      {name: "midnight city", youtubeLink: "https://www.youtube.com/watch?v=dX3k_QDnzHE"}
+    )
+
+    const createdRec = await prisma.recommendation.findUnique({
+      where : {name: "midnight city"}
+    })
+
+    expect(response.status).toBe(201)
+    expect(createdRec).not.toBeNull()
+  })
 })
