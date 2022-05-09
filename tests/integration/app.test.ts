@@ -20,5 +20,17 @@ describe("app test suit - integration", () => {
 
     expect(response.status).toBe(200)
     expect(response.body.length).toBeGreaterThan(0)
-  })  
+  })
+  
+  it("GET /recommendations/:id should return single referred recommendation", async () => {
+    const createdRec = await prisma.recommendation.create({
+      data: {name: "Dua Lipa : Tiny Desk", youtubeLink: "https://www.youtube.com/watch?v=F4neLJQC1_E"}
+    })
+
+    const response = await supertest(app).get(`/recommendation/${createdRec.id}`)
+    
+    expect(response.status).toBe(200)
+    expect(response.body).not.toBeUndefined()
+    expect(response.body.id).toBe(createdRec.id)
+  })
 })
